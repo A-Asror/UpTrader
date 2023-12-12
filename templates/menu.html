@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% load static %}
+{% load menu_tags %}
+<ul>
+    {% for menu in list_menu %}
+        <li {% if menu.title == current_menu %} class="active" {% endif %}>
+            <a href="http://127.0.0.1:8000/menu/{% if menu.url %}{{ menu.url }}{% else %}{% url menu.url_name %}{% endif %}/">{{ menu.title }}</a>
+            {% if menu.children.exists %}
+                {% for child_menu in menu.children.all %}
+                    {% with menu_items=menu.children %}
+                        {% draw_menu child_menu.id %}
+                    {% endwith %}
+                {% endfor %}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
